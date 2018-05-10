@@ -21,13 +21,19 @@ namespace AlbumCopaDoMundo.UWP.Pages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ConfiguracoesPage : Page
+    public sealed partial class FigurinhasPage : Page
     {
-        public ConfiguracoesViewModel ViewModel { get; } = new ConfiguracoesViewModel();
+        public FigurinhasViewModel ViewModel { get; } = new FigurinhasViewModel();
 
-        public ConfiguracoesPage()
+        public FigurinhasPage()
         {
             this.InitializeComponent();
+            this.Loaded += FigurinhasPage_Loaded;
+        }
+
+        private async void FigurinhasPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.Initialize();
         }
     }
 }

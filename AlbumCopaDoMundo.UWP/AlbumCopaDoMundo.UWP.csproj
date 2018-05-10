@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\CheckBoxToNullableIntConverter.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -102,12 +103,23 @@
     <Compile Include="Pages\ConfiguracoesPage.xaml.cs">
       <DependentUpon>ConfiguracoesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EditarFigurinhaPage.xaml.cs">
+      <DependentUpon>EditarFigurinhaPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\FigurinhasPage.xaml.cs">
+      <DependentUpon>FigurinhasPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Base\IRepository.cs" />
     <Compile Include="Repository\EFFigurinhaRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\StorageService.cs" />
+    <Compile Include="UserControls\FigurinhaItemUserControl.xaml.cs">
+      <DependentUpon>FigurinhaItemUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ConfiguracoesViewModel.cs" />
+    <Compile Include="ViewModels\FigurinhasViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -138,6 +150,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\EditarFigurinhaPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FigurinhasPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\FigurinhaItemUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore">
@@ -157,11 +181,7 @@
       <Name>AlbumCopaDoMundo.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-    <Folder Include="UserControls\" />
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

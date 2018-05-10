@@ -8,9 +8,7 @@ namespace AlbumCopaDoMundo.UWP.Repository.Base
 {
     public interface IRepository<T>
     {
-        Task CarregarTodosAsync();
-        Task CriarAsync(T entity);
         Task AtualizarAsync(T entity);
-        Task ExcluirAsync(T entity);
+        Task ConfigurarAlbum(bool reiniciar);
     }
 }

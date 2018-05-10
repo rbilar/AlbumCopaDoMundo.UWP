@@ -7,7 +7,36 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    </Grid>
+    <NavigationView Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                ItemInvoked="NavView_ItemInvoked"
+                Loaded="NavView_Loaded"
+                Name="NavView">
+
+        <NavigationView.HeaderTemplate>
+            <DataTemplate>
+                <Grid Margin="24,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" FontSize="28" VerticalAlignment="Center" Text="{Binding Header, ElementName=NavView}"/>
+                </Grid>
+            </DataTemplate>
+        </NavigationView.HeaderTemplate>
+
+        <NavigationView.MenuItems>
+            <NavigationViewItemHeader Content="Album Copa do Mundo"/>
+            <NavigationViewItem Icon="Play" Content="Album Completo" Tag="Completo"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Apenas Faltantes" Tag="Faltantes"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Apenas Completadas" Tag="Completadas"></NavigationViewItem>
+        </NavigationView.MenuItems>
+
+        <NavigationView.Content>
+            <Frame x:Name="ContentFrame" Margin="24">
+
+            </Frame>
+        </NavigationView.Content>
+
+    </NavigationView>
 </Page>

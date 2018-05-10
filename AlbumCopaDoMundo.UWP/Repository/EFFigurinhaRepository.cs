@@ -14,59 +14,627 @@ namespace AlbumCopaDoMundo.UWP.Repository
                 new Lazy<EFFigurinhaRepository>(() => new EFFigurinhaRepository());
 
         public static EFFigurinhaRepository Instance { get { return _instance.Value; } }
-
-        public override async Task CarregarTodosAsync()
-        {
-            if (Items.Count > 0)
-            {
-                return;
-            }
-
-            using (var context = new FigurinhaDbContext())
-            {
-                var FigurinhaItems = context.Figurinhas.ToList();
-
-                foreach (var Figurinha in FigurinhaItems)
-                {
-                    Items.Add(Figurinha);
-                }
-            }
-        }
-
-        public override async Task CriarAsync(Figurinha entity)
-        {
-            using (var context = new FigurinhaDbContext())
-            {
-                Items.Add(entity);
-                context.Figurinhas.Add(entity);
-
-                await context.SaveChangesAsync();
-            }
-        }
-
+        
         public override async Task AtualizarAsync(Figurinha entity)
         {
-            using (var context = new FigurinhaDbContext())
+            using (var context = new AlbumCopaDoMundoDbContext())
             {
                 context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 await context.SaveChangesAsync();
             }
         }
 
-        public override async Task ExcluirAsync(Figurinha entity)
+        public override async Task ConfigurarAlbum(bool reiniciar)
         {
-            var Figurinha = Items.SingleOrDefault(c => c.Id == entity.Id);
-
-            if (Figurinha != null)
+            using (var context = new AlbumCopaDoMundoDbContext())
             {
-                using (var context = new FigurinhaDbContext())
+                if (Items.Count == 0)
                 {
-                    Items.Remove(Figurinha);
+                    foreach (var item in context.Figurinhas.ToList().OrderBy(x => x.Numero))
+                    {
+                        Items.Add(item);
+                    }
+                }
 
-                    context.Figurinhas.Remove(Figurinha);
-                    await context.SaveChangesAsync();
+                if (Items.Count == 0 || reiniciar)
+                {
+                    //Remove caso houver
+                    context.RemoveRange(Items);
+                    context.SaveChangesAsync();
+
+                    //Configura o album novamente
+                    ReconfigurarAlbum();
+
+                    //Adiciona no contexto
+                    context.AddRange(Items);
+                    context.SaveChangesAsync();
                 }
             }
+        }
+
+
+        private void ReconfigurarAlbum()
+        {
+            Items.Clear();
+
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 34, Nome = "Igor Akinfeev" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 35, Nome = "Igor Smolnikov" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 36, Nome = "Viktor Vasin" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 37, Nome = "Mário Fernandes" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 38, Nome = "Fedor Kudrayashov" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 39, Nome = "Ilya Kutepov" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 40, Nome = "Dmitri Kombarov" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 41, Nome = "Aleksei Miranchuk" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 42, Nome = "Denis Glushakov" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 43, Nome = "Aleksandr Golovin" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 44, Nome = "Yuri Zhirkov" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 45, Nome = "Aleksandr Erokhin" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 46, Nome = "Alan Dzagoev" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 47, Nome = "Daler Kuzyayev" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 48, Nome = "Daler Kuzyayev" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 49, Nome = "Dmitry Poloz" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 50, Nome = "Fedor Smolov" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 51, Nome = "Aleksandr Kokorin" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 54, Nome = "Abdullah Al - Mayouf" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 55, Nome = "Osama Hawsawi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 56, Nome = "Abdullah Al - Zori" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 57, Nome = "Mansour Al - Harbi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 58, Nome = "Omar Hawsawi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 59, Nome = "Yasser Al - Shahrani" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 60, Nome = "Motaz Hawsawi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 61, Nome = "Mohammed Al - Beraik" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 62, Nome = "Taisir Al - Jassim" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 63, Nome = "Salman Al - Faraj" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 64, Nome = "Abdulmalek Al - Khaibri" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 65, Nome = "Salman Al - Moasher" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 66, Nome = "Yahya Al - Shehri" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 67, Nome = "Salem Al - Dosari" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 68, Nome = "Nawaf Al - Abed" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 69, Nome = "Mohammad Al - Sahlawi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 70, Nome = "Nasser Al - Shamrani" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 71, Nome = "Fahad Al - Muwallad" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 74, Nome = "Essam El Hadary" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 75, Nome = "Ali Gabr" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 76, Nome = "Ahmed Elmohamady" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 77, Nome = "Omar Gaber" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 78, Nome = "Ramy Rabia" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 79, Nome = "Ahmed Hegazi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 80, Nome = "Ahmed Abdelmonem Fathy" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 81, Nome = "Mohamed Abdel Shaly" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 82, Nome = "Saad El - Din Samir" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 83, Nome = "Tarek Hamed" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 84, Nome = "Mahmoud Kahraba" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 85, Nome = "Mohamed Elneny" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 86, Nome = "Trezeguet" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 87, Nome = "Abdallah El Said" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 88, Nome = "Ramadan Sobhi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 89, Nome = "Ahmed Hassan" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 90, Nome = "Mohamed Salah" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 91, Nome = "Amr Gamal" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 94, Nome = "Fernando Muslera" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 95, Nome = "Maxi Pereira" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 96, Nome = "Diego Godín" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 97, Nome = "Martín Cáceres" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 98, Nome = "José Giménez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 99, Nome = "Sebastián Coates" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 100, Nome = "Gastón Silva" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 101, Nome = "Mathías Corujo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 102, Nome = "Egidio Arévalo Ríos" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 103, Nome = "Álvaro González" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 104, Nome = "Nicolás Lodeiro" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 105, Nome = "Carlos Sánchez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 106, Nome = "Cristian Rodríguez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 107, Nome = "Matías Vecino" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 108, Nome = "Edinson Cavani" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 109, Nome = "Luis Suárez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 110, Nome = "Cristhian Stuani" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 111, Nome = "Diego Rolán" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 114, Nome = "Rui Patrício" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 115, Nome = "Bruno Alves" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 116, Nome = "Pepe" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 117, Nome = "José Fonte" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 118, Nome = "Eliseu" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 119, Nome = "Cédric" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 120, Nome = "Raphaël Guerreiro" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 121, Nome = "João Moutinho" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 122, Nome = "João Mário" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 123, Nome = "Danilo Pereira" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 124, Nome = "William Carvalho" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 125, Nome = "André Gomes" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 126, Nome = "Ricardo Quaresma" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 127, Nome = "Bernardo Silva" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 128, Nome = "André Silva" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 129, Nome = "Gelson Martins" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 130, Nome = "Cristiano Ronaldo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 131, Nome = "Nani" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 134, Nome = "David de Gea" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 135, Nome = "Jordi Alba" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 136, Nome = "Nacho" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 137, Nome = "Nacho Monreal" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 138, Nome = "Gerard Piqué" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 139, Nome = "Sergio Ramos" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 140, Nome = "Daniel Carvajal" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 141, Nome = "Sergio Buesquets" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 142, Nome = "Thiago" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 143, Nome = "Isco" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 144, Nome = "Koke" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 145, Nome = "Marco Asensio" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 146, Nome = "Andrés Iniesta" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 147, Nome = "David Silva" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 148, Nome = "Saúl Ñíguez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 149, Nome = "Álvaro Morata" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 150, Nome = "Vitolo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 151, Nome = "Diego Costa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 154, Nome = "Munir Mohamedi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 155, Nome = "Medhi Benatia" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 156, Nome = "Nabil Dirar" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 157, Nome = "Romain Saïss" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 158, Nome = "Fouad Chafik" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 159, Nome = "Hamza Mendyl" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 160, Nome = "Achraf Hakimi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 161, Nome = "Mbark Boussoufa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 162, Nome = "Karim El Ahmadi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 163, Nome = "Younès Belhanda" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 164, Nome = "Nordin Amrabat" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 165, Nome = "Fayçal Fajr" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 166, Nome = "Hakim Ziyech" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 167, Nome = "Youssef Aït Bennasser" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 168, Nome = "Khalid Boutaib" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 169, Nome = "Rachid Alioui" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 170, Nome = "Aziz Bouhaddouz" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 171, Nome = "Youssef En - Nesyri" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 174, Nome = "Alireza Beiranvand" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 175, Nome = "Pejman Montazeri" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 176, Nome = "Vouria Ghafouri" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 177, Nome = "Jalal Hosseini" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 178, Nome = "Milad Mohammadi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 179, Nome = "Morteza Pouraliganji" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 180, Nome = "Ramin Rezaeian" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 181, Nome = "Ehsan Hajsafi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 182, Nome = "Omid Ebrahimi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 183, Nome = "Saeid Ezatolahi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 184, Nome = "Vahid Amiri" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 185, Nome = "Alireza Jahanbakhsh" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 186, Nome = "Ashkan Dejagah" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 187, Nome = "Saman Ghoddos" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 188, Nome = "Mehdi Taremi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 189, Nome = "Karim Ansarifard" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 190, Nome = "Reza Ghoochannejhad" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 191, Nome = "Sardar Azmoun" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 194, Nome = "Hugo Lloris" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 195, Nome = "Raphaël Varane" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 196, Nome = "Lucas Digne" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 197, Nome = "Djibril Sidibé" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 198, Nome = "Samuel Umtiti" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 199, Nome = "Layvin Kurzawa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 200, Nome = "Laurent Koscielny" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 201, Nome = "Balise Matuidi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 202, Nome = "N’Golo Kanté" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 203, Nome = "Thomas Lemar" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 204, Nome = "Adrien Rabiot" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 205, Nome = "Paul Pogba" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 206, Nome = "Olivier Giroud" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 207, Nome = "Antoine Griezmann" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 208, Nome = "Alexandre Lacazette" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 209, Nome = "Kylian Mbappé" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 210, Nome = "Ousmane Dembélé" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 211, Nome = "Anthony Martial" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 214, Nome = "Mathew Ryan" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 215, Nome = "Mitchell Langerak" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 216, Nome = "Milos Degenek" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 217, Nome = "Bailey Wright" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 218, Nome = "Aziz Behich" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 219, Nome = "Trent Sainsbury" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 220, Nome = "Ryan McGowan" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 221, Nome = "Mark Milligan" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 222, Nome = "Aaron Mooy" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 223, Nome = "James Troisi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 224, Nome = "Mile Jedinak" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 225, Nome = "Massimo Luongo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 226, Nome = "Jackson Irvine" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 227, Nome = "Tom Rogic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 228, Nome = "Tim Cahill" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 229, Nome = "Mathew Leckie" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 230, Nome = "Tomi Juric" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 231, Nome = "Robbie Kruse" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 234, Nome = "Pedro Gallese" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 235, Nome = "Carlos Cáceda" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 236, Nome = "Aldo Corzo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 237, Nome = "Miguel Trauco" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 238, Nome = "Christian Ramos" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 239, Nome = "Luis Advincula" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 240, Nome = "Alberto Rodríguez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 241, Nome = "Miguel Araujo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 242, Nome = "Christian Cueva" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 243, Nome = "Renato Tapia" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 244, Nome = "Andy Polo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 245, Nome = "Yoshimar Yotún" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 246, Nome = "Edison Flores" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 247, Nome = "Paolo Hurtado" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 248, Nome = "Paolo Guerrero" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 249, Nome = "Jefferson Farfán" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 250, Nome = "Raúl Ruidíaz" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 251, Nome = "André Carrillo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 254, Nome = "Kasper Schmeichel" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 255, Nome = "Kannik Vestergaard" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 256, Nome = "Simon Kjaer" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 257, Nome = "Andreas Christensen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 258, Nome = "Andreas Bjelland" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 259, Nome = "Mathias Jorgensen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 260, Nome = "Jens Stryger Larsen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 261, Nome = "Peter Ankersen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 262, Nome = "Riza Durmisi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 263, Nome = "William Kvist" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 264, Nome = "Thomas Delaney" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 265, Nome = "Christian Eriksen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 266, Nome = "Lasse Schöne" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 267, Nome = "Pione Sisto" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 268, Nome = "Nicklas Bendtner" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 269, Nome = "Nicolai Jorgensen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 270, Nome = "Yussuf Poulsen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 271, Nome = "Andreas Cornelius" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 274, Nome = "Sergio Romero" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 275, Nome = "Gabriel Mercado" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 276, Nome = "Federico Fazio" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 277, Nome = "Javier Mascherano" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 278, Nome = "Nicolás Otamendi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 279, Nome = "Marcos Rojo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 280, Nome = "Ramiro Funes Mori" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 281, Nome = "Lucas Biglia" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 282, Nome = "Enzo Pérez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 283, Nome = "Ángel Di Maria" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 284, Nome = "Marcos Acuña" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 285, Nome = "Éver Banega" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 286, Nome = "Eduardo Salvio" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 287, Nome = "Mauro Icardi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 288, Nome = "Lionel Messi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 289, Nome = "Paulo Dybala" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 290, Nome = "Sergio Agüero" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 291, Nome = "Gonzalo Higuaín" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 294, Nome = "Hannes Halldórsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 295, Nome = "Birkir Saevarsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 296, Nome = "Ragnar Sigurdsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 297, Nome = "Kári Árnason" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 298, Nome = "Ari Skúlason" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 299, Nome = "Sverrir Ingason" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 300, Nome = "Hordur Magnússon" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 301, Nome = "Aron Gunnarsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 302, Nome = "Birkir Bjarnason" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 303, Nome = "Emil Hallfredsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 304, Nome = "Gylfi Sigurdsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 305, Nome = "Arnór Ingvi Traustason" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 306, Nome = "Rúrik Gíslason" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 307, Nome = "Johann Gudmundsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 308, Nome = "Alfred Finnbogason" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 309, Nome = "Jón Dadi Bödvarsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 310, Nome = "Vidar Örn Kjartansson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 311, Nome = "Björn Sigurdarson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 314, Nome = "Danijel Subasic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 315, Nome = "Sime Vrsaljko" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 316, Nome = "Ivan Strinic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 317, Nome = "Dejan Lovren" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 318, Nome = "Domagoj Vida" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 319, Nome = "Josip Pivaric" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 320, Nome = "Vedran Corluka" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 321, Nome = "Ivan Rakitic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 322, Nome = "Luka Modric" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 323, Nome = "Marcelo Brozovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 324, Nome = "Marko Rog" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 325, Nome = "Mario Pasalic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 326, Nome = "Milan Badelj" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 327, Nome = "Mateo Kovacic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 328, Nome = "Andrej Kramaric" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 329, Nome = "Nikola Kalinic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 330, Nome = "Mario Mandzukic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 331, Nome = "Ivan Perisic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 334, Nome = "Ikechukwu Ezenwa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 335, Nome = "Elderson Echiejilé" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 336, Nome = "Shehu Abdullahi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 337, Nome = "William Troost - Ekong" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 338, Nome = "Leon Balogun" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 339, Nome = "Kenneth Omeruo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 340, Nome = "Ola Aina" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 341, Nome = "John Obi Mikel" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 342, Nome = "Ogenyi Onazi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 343, Nome = "Etebo Oghenekaro" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 344, Nome = "Wilfred Ndidi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 345, Nome = "Mikel Agu" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 346, Nome = "Ahmed Musa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 347, Nome = "Victor Musa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 348, Nome = "Moses Simon" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 349, Nome = "Odion Ighalo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 350, Nome = "Alex Iwobi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 351, Nome = "Kelechi Iheanacho" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 354, Nome = "Alisson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 355, Nome = "Dani Alves" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 356, Nome = "Thiago Silva" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 357, Nome = "Miranda" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 358, Nome = "Filipe Luís" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 359, Nome = "Marquinhos" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 360, Nome = "Marcelo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 361, Nome = "Willian" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 362, Nome = "Paulinho" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 363, Nome = "Fernandinho" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 364, Nome = "Casemiro" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 365, Nome = "Renato Augusto" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 366, Nome = "Giuliano" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 367, Nome = "Philippe Coutinho" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 368, Nome = "Douglas Costa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 369, Nome = "Roberto Firmino" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 370, Nome = "Gabriel Jesus" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 371, Nome = "Neymar Jr" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 374, Nome = "Yann Sommer" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 375, Nome = "Stephan Lichtsteiner" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 376, Nome = "Manuel Akanji" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 377, Nome = "Michael Lang" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 378, Nome = "Ricardo Rodríguez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 379, Nome = "Johan Djourou" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 380, Nome = "Fabian Schär" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 381, Nome = "Granit Xhaka" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 382, Nome = "Steven Zuber" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 383, Nome = "Blerim Dzemaili" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 384, Nome = "Denis Zakaria" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 385, Nome = "Xherdan Shaqiri" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 386, Nome = "Valon Behrami" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 387, Nome = "Gerson Fernandes" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 388, Nome = "Breel Embolo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 389, Nome = "Haris Seferovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 390, Nome = "Admir Mehmedi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 391, Nome = "Eren Derdiyok" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 394, Nome = "Keylor Navas" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 395, Nome = "Giancarlo González" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 396, Nome = "Cristian Gamboa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 397, Nome = "Bryan Oviedo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 398, Nome = "Francisco Calvo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 399, Nome = "Kendall Waston" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 400, Nome = "Rónald Matarrita" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 401, Nome = "Michael Umaña" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 402, Nome = "Johnny Acosta" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 403, Nome = "Bryan Ruiz" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 404, Nome = "Celso Borges" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 405, Nome = "Christian Bolaños" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 406, Nome = "Randall Azofeifa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 407, Nome = "David Guzmán" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 408, Nome = "Rodney Wallace" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 409, Nome = "Joel Campbell" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 410, Nome = "Marco Ureña" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 411, Nome = "Johan Venegas" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 414, Nome = "Vladimir Stojkovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 415, Nome = "Branislav Ivanovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 416, Nome = "Aleksandar Kolarov" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 417, Nome = "Antonio Rukavina" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 418, Nome = "Matija Nastasic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 419, Nome = "Dusko Tosic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 420, Nome = "Nikola Maksimovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 421, Nome = "Jagos Vukovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 422, Nome = "Dusan Tadic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 423, Nome = "Sergej Milinkovic - Savic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 424, Nome = "Nemanja Matic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 425, Nome = "Luka Milivojevic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 426, Nome = "Adem Ljajic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 427, Nome = "Nemanja Gudelj" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 428, Nome = "Mijat Gacinovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 429, Nome = "Filip Kostic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 430, Nome = "Aleksandar Mitrovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 431, Nome = "Aleksandar Prijovic" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 434, Nome = "Manuel Neuer" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 435, Nome = "Mats Hummels" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 436, Nome = "Antonio Rüdiger" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 437, Nome = "Jérôme Boateng" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 438, Nome = "Joshua Kimmich" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 439, Nome = "Jonas Hector" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 440, Nome = "Julian Draxler" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 441, Nome = "Toni Kroos" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 442, Nome = "Emre Can" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 443, Nome = "Leon Goretzka" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 444, Nome = "Julian Brandt" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 445, Nome = "Sebastian Rudy" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 446, Nome = "Leroy Sané" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 447, Nome = "Mesut Özil" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 448, Nome = "Sami Khedira" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 449, Nome = "Mario Götze" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 450, Nome = "Thomas Müller" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 451, Nome = "Timo Werner" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 454, Nome = "Guillermo Ochoa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 455, Nome = "Hugo Ayala" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 456, Nome = "Diego Reyes" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 457, Nome = "Héctor Moreno" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 458, Nome = "Jesús Gallardo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 459, Nome = "Miguel Layún" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 460, Nome = "Carlos Salcedo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 461, Nome = "Jonathan dos Santos" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 462, Nome = "Giovani dos Santos" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 463, Nome = "Andrés Guardado" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 464, Nome = "Héctor Herrera" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 465, Nome = "Javier Aquino" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 466, Nome = "Jesús Corona" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 467, Nome = "Hirving Lozano" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 468, Nome = "Raúl Jiménez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 469, Nome = "Carlos Vela" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 470, Nome = "Javier Hernández" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 471, Nome = "Oribe Peralta" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 474, Nome = "Robin Olsen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 475, Nome = "Mikel Lustig" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 476, Nome = "Victor Nilsson Lindelöf" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 477, Nome = "Andreas Granqvist" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 478, Nome = "Martin Olsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 479, Nome = "Ludwig Augustinsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 480, Nome = "Emil Krafth" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 481, Nome = "Pontus Jansson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 482, Nome = "Sebastian Larsson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 483, Nome = "Emil Forsberg" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 484, Nome = "Gustav Svensson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 485, Nome = "Viktor Claesson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 486, Nome = "Jimmy Durmaz" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 487, Nome = "Albin Ekdal" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 488, Nome = "Isaac Kiese Thelin" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 489, Nome = "Marcus Berg" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 490, Nome = "John Guidetti" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 491, Nome = "Ola Toivonen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 494, Nome = "Kim Seunggyu" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 495, Nome = "Kim Younggwon" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 496, Nome = "Kim Jinsu" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 497, Nome = "Kwak Taehwi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 498, Nome = "Hong Jeongho" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 499, Nome = "Jang Hyunsoo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 500, Nome = "Koo Jacheol" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 501, Nome = "Kwon Changhoon" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 502, Nome = "Ki Sungyueng" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 503, Nome = "Nam Taehee" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 504, Nome = "Han Kookyoung" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 505, Nome = "Lee Chungyoung" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 506, Nome = "Jung Wooyoung" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 507, Nome = "Lee Jaesung" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 508, Nome = "Son Heungmin" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 509, Nome = "Ji Dongwon" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 510, Nome = "Kim Shinwook" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 511, Nome = "Hwang Heechan" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 514, Nome = "Thibaut Courtois" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 515, Nome = "Toby Alderweireld" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 516, Nome = "Thomas Vermaelen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 517, Nome = "Jan Vertonghen" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 518, Nome = "Vincent Kompany" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 519, Nome = "Thomas Meunier" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 520, Nome = "Axel Witsel" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 521, Nome = "Radja Nainggolan" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 522, Nome = "Kevin De Bruyne" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 523, Nome = "Marouane Fellaini" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 524, Nome = "Youri Tielemans" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 525, Nome = "Mousa Dembélé" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 526, Nome = "Nacer Chadli" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 527, Nome = "Eden Hazard" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 528, Nome = "Yannick Carrasco" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 529, Nome = "Dries Mertens" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 530, Nome = "Michy Batshuayi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 531, Nome = "Romelu Lukaku" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 534, Nome = "Jaime Penedo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 535, Nome = "José Calderón" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 536, Nome = "Michael Murillo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 537, Nome = "Fidel Escobar" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 538, Nome = "Román Torres" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 539, Nome = "Adolfo Machado" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 540, Nome = "Éric Davis" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 541, Nome = "Luis Ovalle" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 542, Nome = "Felipe Baloy" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 543, Nome = "Gabriel Gómez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 544, Nome = "Édgar Bárcenas" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 545, Nome = "Armando Cooper" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 546, Nome = "Alberto Quintero" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 547, Nome = "Aníbal Godoy" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 548, Nome = "Blas Pérez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 549, Nome = "Gabriel Torres" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 550, Nome = "Luis Tejada" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 551, Nome = "Abdiel Arroyo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 554, Nome = "Aymen Mathlouthi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 555, Nome = "Ali Maâloul" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 556, Nome = "Syam Ben Youssef" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 557, Nome = "Aymen Abdennour" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 558, Nome = "Hamdi Naguez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 559, Nome = "Yassine Meriah" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 560, Nome = "Oussama Haddadi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 561, Nome = "Ferjani Sassi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 562, Nome = "Wahbi Khazri" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 563, Nome = "Mohamed Amine Ben Amor" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 564, Nome = "Ghaylène Chaalali" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 565, Nome = "Naïm Sliti" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 566, Nome = "Youssef Msakni" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 567, Nome = "Fakhreddine Ben Youssef" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 568, Nome = "Taha Yassine Khenissi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 569, Nome = "Yoann Touzghar" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 570, Nome = "Anice Bradi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 571, Nome = "Ahmed Akaïchi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 574, Nome = "Joe Hart" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 575, Nome = "Jordan Pickford" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 576, Nome = "Gary Cahill" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 577, Nome = "Kyle Walker" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 578, Nome = "John Stones" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 579, Nome = "Ryan Bertrand" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 580, Nome = "Danny Rose" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 581, Nome = "Phil Jones" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 582, Nome = "Jordan Henderson" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 583, Nome = "Alex Oxlade - Chamberlain" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 584, Nome = "Dele Alli" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 585, Nome = "Eric Dier" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 586, Nome = "Adam Lallana" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 587, Nome = "Jesse Lingard" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 588, Nome = "Raheem Sterling" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 589, Nome = "Harry Kane" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 590, Nome = "Marcus Rashford" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 591, Nome = "Jamie Vardy" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 594, Nome = "Lukasz Fabianski" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 595, Nome = "Wojciech Szczesny" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 596, Nome = "Lukasz Piszczek" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 597, Nome = "Kamil Glik" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 598, Nome = "Michal Pazdan" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 599, Nome = "Thiago Cionek" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 600, Nome = "Bartosz Bereszynski" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 601, Nome = "Artur Jedrzejczyk" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 602, Nome = "Maciej Rybus" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 603, Nome = "Jakub Blaszczykowski" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 604, Nome = "Kamil Grosicki" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 605, Nome = "Grzegorz Krychowiak" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 606, Nome = "Krzysztof Maczynski" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 607, Nome = "Piotr Zielinski" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 608, Nome = "Karol Linetty" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 609, Nome = "Robert Lewandowski" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 610, Nome = "Lukasz Teodorczyk" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 611, Nome = "Arkadiusz Milik" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 614, Nome = "Khadim N’Diaye" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 615, Nome = "Kara Mbodj" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 616, Nome = "Lamine Gassama" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 617, Nome = "Kalidou Koulibaly" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 618, Nome = "Salif Sané" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 619, Nome = "Saliou Ciss" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 620, Nome = "Moussa Wagué" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 621, Nome = "Idrissa Gueye" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 622, Nome = "Cheikhou Kouyaté" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 623, Nome = "Cheikh Ndoye" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 624, Nome = "Papa Alioune N’Diaye" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 625, Nome = "Sadio Mané" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 626, Nome = "Moussa Sow" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 627, Nome = "Moussa Konaté" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 628, Nome = "Keita Baldé" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 629, Nome = "M’Baye Niang" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 630, Nome = "Ismaïla Sarr" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 631, Nome = "Mame Diouf" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 634, Nome = "David Ospina" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 635, Nome = "Cristian Zapata" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 636, Nome = "Santiago Arias" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 637, Nome = "Frank Fabra" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 638, Nome = "Dávinson Sánchez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 639, Nome = "Yerry Mina" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 640, Nome = "Carlos Sánchez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 641, Nome = "Juan Guillermo Cuadrado" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 642, Nome = "Abel Aguilar" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 643, Nome = "James Rodríguez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 644, Nome = "Giovanni Moreno" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 645, Nome = "Wílmar Barrios" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 646, Nome = "Radamel Falcao García" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 647, Nome = "Teófilo Gutiérrez" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 648, Nome = "Carlos Bacca" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 649, Nome = "Edwin Cardona" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 650, Nome = "Yimmi Chará" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 651, Nome = "Duván Zapata" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 654, Nome = "Eiji Kawashima" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 655, Nome = "Shusaku Nishikawa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 656, Nome = "Masato Morishige" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 657, Nome = "Yuto Nagatomo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 658, Nome = "Hiroki Sakai" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 659, Nome = "Tomoaki Makino" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 660, Nome = "Gotoku Sakai" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 661, Nome = "Maya Yoshida" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 662, Nome = "Hotaru Yamaguchi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 663, Nome = "Shinji Kagawa" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 664, Nome = "Makoto Hasebe" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 665, Nome = "Hiroshi Kiyotake" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 666, Nome = "Keisuke Honda" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 667, Nome = "Takashi Usami" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 668, Nome = "Genki Haraguchi" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 669, Nome = "Shinji Okazaki" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 670, Nome = "Yuya Kubo" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 671, Nome = "Yuya Osako" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 680, Nome = "Pelé" });
+            Items.Add(new Models.Figurinha() { Colada = false, Numero = 681, Nome = "Miroslav Klose" });
         }
     }
 }

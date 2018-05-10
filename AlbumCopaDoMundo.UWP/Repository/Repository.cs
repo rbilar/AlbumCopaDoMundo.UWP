@@ -17,9 +17,7 @@ namespace AlbumCopaDoMundo.UWP.Repository
             get { return _items; }
         }
 
-        public abstract Task CarregarTodosAsync();
-        public abstract Task CriarAsync(T entity);
         public abstract Task AtualizarAsync(T entity);
-        public abstract Task ExcluirAsync(T entity);
+        public abstract Task ConfigurarAlbum(bool reiniciar);
     }
 }

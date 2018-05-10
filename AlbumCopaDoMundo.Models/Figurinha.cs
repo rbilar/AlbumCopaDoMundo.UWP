@@ -6,13 +6,20 @@ namespace AlbumCopaDoMundo.Models
 {
     public class Figurinha : NotifyableClass
     {
+        private Guid _id;
+        public Guid Id
+        {
+            get { return _id; }
+            set { Set(ref _id, value); }
+        }
+
         private int _numero;
         public int Numero
         {
             get { return _numero; }
             set { Set(ref _numero, value); }
         }
-        
+
         private string _nome;
         public string Nome
         {

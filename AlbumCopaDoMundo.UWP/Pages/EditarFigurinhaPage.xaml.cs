@@ -1,5 +1,4 @@
-﻿using AlbumCopaDoMundo.UWP.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,11 +20,9 @@ namespace AlbumCopaDoMundo.UWP.Pages
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ConfiguracoesPage : Page
+    public sealed partial class EditarFigurinhaPage : Page
     {
-        public ConfiguracoesViewModel ViewModel { get; } = new ConfiguracoesViewModel();
-
-        public ConfiguracoesPage()
+        public EditarFigurinhaPage()
         {
             this.InitializeComponent();
         }

@@ -5,9 +5,18 @@
     xmlns:local="using:AlbumCopaDoMundo.UWP.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converter="using:AlbumCopaDoMundo.UWP.Converters"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <converter:CheckBoxToNullableIntConverter x:Key="CheckBoxToNullableInt" />
+    </Page.Resources>
 
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel Margin="12">
+            <TextBlock Text="Exibição" FontSize="20" FontWeight="Bold" Margin="14" />
+            <CheckBox Content="Mostrar Figurinha preenchida" Margin="24 0"
+                      IsChecked="{x:Bind ViewModel.EsconderFigurinhaPreenchidaConfiguracao, Mode=TwoWay, Converter={StaticResource RadioButtonToNullableInt}, ConverterParameter=0 }" />
+        </StackPanel>
     </Grid>
 </Page>
