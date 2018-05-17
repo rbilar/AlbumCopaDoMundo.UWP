@@ -27,9 +27,17 @@
 
         <NavigationView.MenuItems>
             <NavigationViewItemHeader Content="Album Copa do Mundo"/>
-            <NavigationViewItem Icon="Play" Content="Album Completo" Tag="Completo"></NavigationViewItem>
-            <NavigationViewItem Icon="Play" Content="Apenas Faltantes" Tag="Faltantes"></NavigationViewItem>
-            <NavigationViewItem Icon="Play" Content="Apenas Completadas" Tag="Completadas"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Introdução" Tag="Introdução"></NavigationViewItem>
+            <NavigationViewItem Icon="StopSlideShow" Content="Estádios" Tag="Estádios"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Grupo A" Tag="A"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Grupo B" Tag="B"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Grupo C" Tag="C"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Grupo D" Tag="D"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Grupo E" Tag="E"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Grupo F" Tag="F"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Grupo G" Tag="G"></NavigationViewItem>
+            <NavigationViewItem Icon="Play" Content="Grupo H" Tag="H"></NavigationViewItem>
+            <NavigationViewItem Icon="SolidStar" Content="FIFA World Cup Legends" Tag="FIFA World Cup Legends"></NavigationViewItem>
         </NavigationView.MenuItems>
 
         <NavigationView.Content>

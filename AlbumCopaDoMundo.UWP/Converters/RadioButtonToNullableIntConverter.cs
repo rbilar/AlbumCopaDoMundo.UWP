@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Data;
 
 namespace AlbumCopaDoMundo.UWP.Converters
 {
-    public class CheckBoxToNullableIntConverter : IValueConverter
+    public class RadioButtonToNullableIntConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

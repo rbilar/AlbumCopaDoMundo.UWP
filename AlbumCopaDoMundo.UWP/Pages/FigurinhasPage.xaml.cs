@@ -23,6 +23,8 @@ namespace AlbumCopaDoMundo.UWP.Pages
     /// </summary>
     public sealed partial class FigurinhasPage : Page
     {
+        public string parameter { get; set; }
+
         public FigurinhasViewModel ViewModel { get; } = new FigurinhasViewModel();
 
         public FigurinhasPage()
@@ -33,7 +35,14 @@ namespace AlbumCopaDoMundo.UWP.Pages
 
         private async void FigurinhasPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await ViewModel.Initialize();
+            await ViewModel.Initialize(parameter);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            parameter = e.Parameter.ToString();
         }
     }
 }

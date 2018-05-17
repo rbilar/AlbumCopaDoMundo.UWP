@@ -9,14 +9,16 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converter:CheckBoxToNullableIntConverter x:Key="CheckBoxToNullableInt" />
+        <converter:RadioButtonToNullableIntConverter x:Key="RadioButtonToNullableInt" />
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Margin="12">
-            <TextBlock Text="Exibição" FontSize="20" FontWeight="Bold" Margin="14" />
-            <CheckBox Content="Mostrar Figurinha preenchida" Margin="24 0"
-                      IsChecked="{x:Bind ViewModel.EsconderFigurinhaPreenchidaConfiguracao, Mode=TwoWay, Converter={StaticResource RadioButtonToNullableInt}, ConverterParameter=0 }" />
+            <TextBlock Text="Ordenação" Margin="0,20" />
+            <RadioButton GroupName="OrdemListaReceitas" Content="Por Número" 
+            IsChecked="{x:Bind ViewModel.OrdernarPorNumeroConfiguracao, Mode=TwoWay, Converter={StaticResource RadioButtonToNullableInt}, ConverterParameter=0 }" />
+            <RadioButton GroupName="OrdemListaReceitas" Content="Por Coladas / Não colcadas" 
+            IsChecked="{x:Bind ViewModel.OrdernarPorNumeroConfiguracao, Mode=TwoWay, Converter={StaticResource RadioButtonToNullableInt}, ConverterParameter=1 }" />
         </StackPanel>
     </Grid>
 </Page>

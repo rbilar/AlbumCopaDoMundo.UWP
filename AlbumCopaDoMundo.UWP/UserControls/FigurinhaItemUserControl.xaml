@@ -5,18 +5,44 @@
     xmlns:local="using:AlbumCopaDoMundo.UWP.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cvt="using:AlbumCopaDoMundo.UWP.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
     <Grid Margin="12">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroupMinWidth">
+                <VisualState x:Name="VisualStateMinWidth1">
+                    <VisualState.Setters>
+                        <Setter Target="Nacionalidade.(UIElement.Visibility)" Value="Collapsed"/>
+                        <Setter Target="Numero.(Grid.ColumnSpan)" Value="2"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="VisualStateMinWidth640">
+                    <VisualState.Setters>
+                        <Setter Target="Nacionalidade.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="Numero.(Grid.ColumnSpan)" Value="1"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <TextBlock Text="{x:Bind Figurinha.Numero, Mode=OneWay}" Grid.Column="0" />
-        <TextBlock Text="{x:Bind Figurinha.Nome, Mode=OneWay}" Grid.Column="1" />
-        <TextBlock Text="{x:Bind Figurinha.Colada, Mode=OneWay}" Grid.Column="2" />
+        <TextBlock x:Name="Nacionalidade" Text="{x:Bind Figurinha.Nacionalidade, Mode=OneWay}" Grid.Column="0" />
+        <TextBlock x:Name="Numero" Text="{x:Bind Figurinha.Numero, Mode=OneWay}" Grid.Column="1" />
+        <TextBlock x:Name="Nome"  Text="{x:Bind Figurinha.Nome, Mode=OneWay}" Grid.Column="2" />
+        <CheckBox x:Name="ckbColada" IsChecked="{x:Bind Figurinha.Colada, Mode=TwoWay}" Margin="30,0,0,0" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked" Grid.Column="3" />
     </Grid>
+    
 </UserControl>

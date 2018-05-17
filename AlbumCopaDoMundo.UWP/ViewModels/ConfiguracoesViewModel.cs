@@ -10,17 +10,15 @@ namespace AlbumCopaDoMundo.UWP.ViewModels
 {
     public class ConfiguracoesViewModel : NotifyableClass
     {
-        //private bool? _esconderFigurinhaPreenchidaConfiguracao;
-
-        public bool? EsconderFigurinhaPreenchidaConfiguracao
+        public int? OrdernarPorNumeroConfiguracao
         {
             get
             {
-                return StorageService.LerConfiguracao(StorageService.Configuracoes.EsconderFigurinhaPreenchida, false);
+                return StorageService.LerConfiguracao(StorageService.Configuracoes.OrdernarPorNumeroConfiguracao, 0);
             }
             set
             {
-                StorageService.GravarConfiguracao(StorageService.Configuracoes.EsconderFigurinhaPreenchida, value);
+                StorageService.GravarConfiguracao(StorageService.Configuracoes.OrdernarPorNumeroConfiguracao, value);
             }
         }
     }

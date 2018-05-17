@@ -7,29 +7,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:AlbumCopaDoMundo.Models"
     xmlns:controls="using:AlbumCopaDoMundo.UWP.UserControls"
+    xmlns:controlsMicrosoft="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
 
-
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Margin="15">
-            <ListView Name="lstFigurinhas" ItemsSource="{x:Bind ViewModel.Figurinhas, Mode=OneWay}" SelectionChanged="{x:Bind ViewModel.ListaFigurinhas_SelectionChanged}">
+
+        <StackPanel>
+            <ListView Name="lstReceitas" ItemsSource="{x:Bind ViewModel.Figurinhas, Mode=OneWay}">
                 <ListView.HeaderTemplate>
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="1*" />
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderBrush="Black"  BorderThickness="0,0,0,0.5">
-                                <TextBlock Text="Número" Margin="5,0,0,0" />
+                            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="0,0,0,0.5">
+                                <TextBlock Text="" FontSize="20" />
                             </Border>
-                            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="0,0,0,0.5">
-                                <TextBlock Text="Nome" Margin="5,0,0,0"/>
+                            <Border Grid.Column="1" BorderBrush="Black"  BorderThickness="0,0,0,0.5">
+                                <TextBlock Text="#" FontSize="20" />
                             </Border>
                             <Border Grid.Column="2" BorderBrush="Black" BorderThickness="0,0,0,0.5">
-                                <TextBlock Text="Colada" Margin="5,0,0,0"/>
+                                <TextBlock Text="Titulo" FontSize="20" />
+                            </Border>
+                            <Border Grid.Column="3" BorderBrush="Black" BorderThickness="0,0,0,0.5">
+                                <TextBlock Text="Colada" FontSize="20" />
                             </Border>
 
                         </Grid>
@@ -37,7 +42,7 @@
                 </ListView.HeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Figurinha">
-                        <controls:FigurinhaItemUserControl Figurinha="{x:Bind }" />
+                        <controls:FigurinhaItemUserControl Figurinha="{ x:Bind }" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ItemContainerStyle>

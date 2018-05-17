@@ -13,7 +13,7 @@ namespace AlbumCopaDoMundo.UWP.Services
 
         public enum Configuracoes
         {
-            EsconderFigurinhaPreenchida
+            OrdernarPorNumeroConfiguracao
         }
 
         public static T LerConfiguracao<T>(Configuracoes configuracao, T defaultValue)

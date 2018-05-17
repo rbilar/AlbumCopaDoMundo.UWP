@@ -19,24 +19,9 @@ namespace AlbumCopaDoMundo.UWP.ViewModels
 
         public ObservableCollection<Figurinha> Figurinhas => FigurinhaRepository.Items;
 
-        public async Task Initialize()
+        public async Task Initialize(string parameter)
         {
-            //await FigurinhaRepository.CarregarTodosAsync();
+            await Repository.EFFigurinhaRepository.Instance.BuscarFigurinhas(parameter);
         }
-
-        public void ListaFigurinhas_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var listView = (ListView)sender;
-
-            if (listView.SelectedItem == null || listView.SelectedItem as Figurinha == null)
-            {
-                return;
-            }
-
-            var FigurinhaNumero = ((Figurinha)listView.SelectedItem).Numero;
-
-            NavigationService.Navigate<EditarFigurinhaPage>(FigurinhaNumero);
-        }
-
     }
 }

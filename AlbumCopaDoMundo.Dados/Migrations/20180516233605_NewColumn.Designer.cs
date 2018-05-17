@@ -11,9 +11,10 @@ using System;
 namespace AlbumCopaDoMundo.Dados.Migrations
 {
     [DbContext(typeof(AlbumCopaDoMundoDbContext))]
-    partial class AlbumCopaDoMundoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180516233605_NewColumn")]
+    partial class NewColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

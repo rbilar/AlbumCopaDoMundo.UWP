@@ -18,6 +18,7 @@ namespace AlbumCopaDoMundo.UWP.Repository
         }
 
         public abstract Task AtualizarAsync(T entity);
-        public abstract Task ConfigurarAlbum(bool reiniciar);
+        public abstract Task BuscarFigurinhas(string grupo);
+        public abstract Task ConfigurarAlbum();
     }
 }

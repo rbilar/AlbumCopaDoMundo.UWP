@@ -29,10 +29,27 @@ namespace AlbumCopaDoMundo.UWP
         {
             this.InitializeComponent();
 
-            Repository.EFFigurinhaRepository.Instance.ConfigurarAlbum(false);
+            Repository.EFFigurinhaRepository.Instance.ConfigurarAlbum();
 
             NavigationService.Frame = ContentFrame;
             NavigationService.Navigated += On_Navigated;
+            
+            //Mensagem de boas vindas
+            string mensagemBoasVindas = string.Empty;
+            if (Repository.EFFigurinhaRepository.TotalColadas == 0)
+                mensagemBoasVindas = "Olá, você ainda não colou nenhuma figurinha.";
+            else if (Repository.EFFigurinhaRepository.TotalColadas == 682)
+                mensagemBoasVindas = "Olá, você já completou o seu album.";
+            else 
+                mensagemBoasVindas = string.Format("Olá, você já colou {0} figurinhas.", Repository.EFFigurinhaRepository.TotalColadas.ToString());
+
+            ContentDialog dialog = new ContentDialog()
+            {
+                Content = mensagemBoasVindas,
+                CloseButtonText = "Fechar"
+            };
+            dialog.ShowAsync();
+
         }
 
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -55,9 +72,17 @@ namespace AlbumCopaDoMundo.UWP
         {
             switch (item.Tag)
             {
-                case "Completo":
-                case "Faltantes":
-                case "Completas":
+                case "Introdução":
+                case "Estádios":
+                case "A":
+                case "B":
+                case "C":
+                case "D":
+                case "E":
+                case "F":
+                case "G":
+                case "H":
+                case "FIFA World Cup Legends":
                     NavigationService.Navigate<FigurinhasPage>(item.Tag);
                     break;
             }

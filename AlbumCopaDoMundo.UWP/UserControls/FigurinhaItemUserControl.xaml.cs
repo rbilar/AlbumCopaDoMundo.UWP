@@ -1,9 +1,11 @@
 ﻿using AlbumCopaDoMundo.Models;
+using AlbumCopaDoMundo.UWP.Repository;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,6 +27,8 @@ namespace AlbumCopaDoMundo.UWP.UserControls
             this.InitializeComponent();
         }
 
+        private EFFigurinhaRepository FigurinhaRepository { get; set; } = EFFigurinhaRepository.Instance;
+
         public Figurinha Figurinha
         {
             get { return (Figurinha)GetValue(FigurinhaProperty); }
@@ -33,5 +37,12 @@ namespace AlbumCopaDoMundo.UWP.UserControls
 
         public static readonly DependencyProperty FigurinhaProperty =
             DependencyProperty.Register("Figurinha", typeof(Figurinha), typeof(FigurinhaItemUserControl), new PropertyMetadata(null));
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Figurinha.Colada = (bool)ckbColada.IsChecked;
+
+            FigurinhaRepository.AtualizarAsync(Figurinha);
+        }
     }
 }

@@ -27,6 +27,13 @@ namespace AlbumCopaDoMundo.Models
             set { Set(ref _nome, value); }
         }
 
+        private string _grupo;
+        public string Grupo
+        {
+            get { return _grupo; }
+            set { Set(ref _grupo, value); }
+        }
+
         private string _nacionalidade;
         public string Nacionalidade
         {
