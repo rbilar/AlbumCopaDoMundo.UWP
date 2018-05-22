@@ -104,9 +104,6 @@
     <Compile Include="Pages\ConfiguracoesPage.xaml.cs">
       <DependentUpon>ConfiguracoesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\EditarFigurinhaPage.xaml.cs">
-      <DependentUpon>EditarFigurinhaPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\FigurinhasPage.xaml.cs">
       <DependentUpon>FigurinhasPage.xaml</DependentUpon>
     </Compile>
@@ -148,10 +145,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\ConfiguracoesPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\EditarFigurinhaPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

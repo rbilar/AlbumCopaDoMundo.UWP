@@ -50,6 +50,7 @@ namespace AlbumCopaDoMundo.UWP
             };
             dialog.ShowAsync();
 
+            NavigationService.Navigate<FigurinhasPage>("Introdução");
         }
 
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

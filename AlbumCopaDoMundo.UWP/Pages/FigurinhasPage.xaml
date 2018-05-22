@@ -12,7 +12,6 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <StackPanel>
             <ListView Name="lstReceitas" ItemsSource="{x:Bind ViewModel.Figurinhas, Mode=OneWay}">
                 <ListView.HeaderTemplate>
                     <DataTemplate>
@@ -51,6 +50,6 @@
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
-        </StackPanel>
+        
     </Grid>
 </Page>
